@@ -1,4 +1,4 @@
-# Temporal Interpolation is All You Need for Dynamic Neural Radiance Fields
+# Sync-NeRF integration for nerfstudio
 
 ## Installation
 
