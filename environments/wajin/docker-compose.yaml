@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  syncnerfstudio:
+    image: kazuwjn/syncnerf-nerfstudio
+    container_name: wajin_syncnerf-nerfstudio
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ['0', '1', '2', '3', '4', '5', '6', '7']
+            capabilities: [gpu]
+    environment:
+      - http_proxy=${HTTP_PROXY}
+      - https_proxy=${HTTP_PROXY}
+      - HTTP_PROXY=${HTTP_PROXY}
+      - HTTPS_PROXY=${HTTP_PROXY}
+    build:
+      args:
+        - http_proxy=${HTTP_PROXY}
+        - https_proxy=${HTTP_PROXY}
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTP_PROXY}
+        - BASE_IMAGE=nvidia/cuda:12.2.0-devel-ubuntu20.04
+        - PROJECT_NAME=${PROJECT_NAME}
+        - USER_NAME=${USER_NAME}
+        - GROUP_NAME=${GROUP_NAME}
+        - UID=${UID}
+        - GID=${GID}
+        - ANACONDA_FILE=${ANACONDA_FILE}
+      context: ../../
+      dockerfile: environments/Dockerfile
+    tty: true
+    volumes:
+        - ../../:/home/${USER_NAME}/${PROJECT_NAME}
+        - ../../../data:/home/${USER_NAME}/data

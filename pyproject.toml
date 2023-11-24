@@ -1,0 +1,14 @@
+[project]
+name = "syncnerf"
+version = "0.0.1"
+
+dependencies = [
+    "nerfstudio>=0.3.0"
+]
+
+[tool.setuptools.packages.find]
+include = ["syncnerf*"]
+
+[project.entry-points.'nerfstudio.method_configs']
+syncnerf_kplanes = 'syncnerf.syncnerf_configs:syncnerf_kplanes'
+syncnerf_kplanes_4dv = 'syncnerf.syncnerf_configs:syncnerf_kplanes_4dv'
