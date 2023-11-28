@@ -141,6 +141,7 @@ class KPlanesModelConfig(ModelConfig):
     """Loss coefficients."""
 
     use_camera_offset: bool = True
+    """Whether to use camera offsets"""
 
 
 class KPlanesModel(Model):
@@ -254,8 +255,10 @@ class KPlanesModel(Model):
         param_groups = {
             "proposal_networks": list(self.proposal_networks.parameters()),
             "fields": list(self.field.parameters()),
-            "camera_offset": [self.camera_offset],
+            
         }
+        if self.config.use_camera_offset:
+            param_groups["camera_offset"] = [self.camera_offset]
         return param_groups
 
     def get_training_callbacks(
@@ -352,9 +355,9 @@ class KPlanesModel(Model):
                 metrics_dict["time_smoothness"] = time_smoothness(field_grids)
                 metrics_dict["time_smoothness_proposal_net"] = time_smoothness(prop_grids)
             
-        # offset
-        for i in range(len(self.camera_offset)):
-            metrics_dict[f"camera_offset_{i}"] = self.camera_offset[i].item() * (self.num_frames - 1)
+            # offset
+            for i in range(len(self.camera_offset)):
+                metrics_dict[f"camera_offset_{i}"] = self.camera_offset[i].item() * (self.num_frames - 1)
 
         return metrics_dict
 
