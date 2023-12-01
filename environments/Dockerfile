@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     LANG="C.UTF-8"
 
 RUN apt update && apt install --no-install-recommends -y \
-    git curl make ssh openssh-client
+    git curl make ssh openssh-client sudo
 
 # Add user. Without this, following process is executed as admin. 
 RUN groupadd -g ${GID} ${GROUP_NAME} \
@@ -27,7 +27,7 @@ RUN apt-get install libgl1-mesa-glx libegl1-mesa libxrandr2 libxrandr2 libxss1 l
     echo "export PATH=/opt/anaconda3/bin:$PATH" >> /home/${USER_NAME}/.bashrc && \
     . /home/${USER_NAME}/.bashrc
 
-RUN apt-get install -y libglib2.0-0
+RUN apt-get install -y libglib2.0-0 ffmpeg
 
 USER ${USER_NAME}
 WORKDIR ${APPLICATION_DIRECTORY}
